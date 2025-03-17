@@ -1,5 +1,5 @@
 {
-  "name": "@lsc/questing",
+  "name": "lsc-questing-dcl",
   "version": "1.0.0",
   "description": "SDK7 library to connect Decentraland scenes to the custom Quest System",
   "main": "./dist/index.js",
