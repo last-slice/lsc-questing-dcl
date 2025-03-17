@@ -1,5 +1,5 @@
 import { Client, Room } from 'colyseus.js'
-import mitt from 'mitt'
+// import mitt from 'mitt'
 import { getRealm } from '~system/Runtime'
 import {getPlayer} from "@dcl/sdk/players";
 import './polyfill'
@@ -9,7 +9,7 @@ const DEBUG = false
 let player:any
 let pendingQuestConnections:string[] = []
 
-export const lscQuestEvent = mitt()
+// export const lscQuestEvent = mitt()
 
 export enum LSCQUEST_EVENTS {
   QUEST_ERROR = 'QUEST_ERROR',
@@ -109,43 +109,43 @@ export function LSCQuestAction(questId:string, stepId:string, taskId:string){
 function setLSCQuestListeners(room:Room, userId:string){
   room.onMessage(LSCQUEST_EVENTS.QUEST_ERROR, (info:any)=>{
     console.log('quest error ', info)
-    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_ERROR, info)
+    // lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_ERROR, info)
   })
 
   room.onMessage(LSCQUEST_EVENTS.QUEST_DATA, (info:any)=>{
     console.log('user quest data ', info)
     lscQuestUserData.set(userId, info)
-    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_DATA, info)
+    // lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_DATA, info)
   })
 
   room.onMessage(LSCQUEST_EVENTS.QUEST_STARTED, (info:any)=>{
     console.log('started quest ', info)
-    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_STARTED, info)
+    // lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_STARTED, info)
   })
 
   room.onMessage(LSCQUEST_EVENTS.QUEST_COMPLETE, (info:any)=>{
     console.log('complete quest ', info)
-    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_COMPLETE, info)
+    // lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_COMPLETE, info)
   })
 
   room.onMessage(LSCQUEST_EVENTS.QUEST_END, (info:any)=>{
     console.log('ended quest ', info)
-    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_END, info)
+    // lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_END, info)
   })
 
   room.onMessage(LSCQUEST_EVENTS.QUEST_UPDATE, (info:any)=>{
     console.log('update quest ', info)
-    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_UPDATE, info)
+    // lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_UPDATE, info)
   })
 
   room.onMessage(LSCQUEST_EVENTS.QUEST_STEP_COMPLETE, (info:any)=>{
     console.log('step complete quest ', info)
-    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_UPDATE, info)
+    // lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_UPDATE, info)
   })
 
   room.onMessage(LSCQUEST_EVENTS.QUEST_TASK_COMPLETE, (info:any)=>{
     console.log('task complete quest ', info)
-    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_UPDATE, info)
+    // lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_UPDATE, info)
   })
 }
 
@@ -193,7 +193,7 @@ async function makeQuestConnection(questId:string){
     setLSCQuestListeners(room, player.userId)
 
     room.onLeave((code:number, reason?:string)=>{
-        lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_DISCONNECT, questId)
+        // lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_DISCONNECT, questId)
     })
 
     return room

@@ -1,4 +1,4 @@
-import 'core-js/features/url'
+// import 'core-js/features/url'
 import { timers } from '@dcl-sdk/utils'
 import {XMLHttpRequest} from "./xmlhttprequest";
 

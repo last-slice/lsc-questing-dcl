@@ -39,7 +39,6 @@
     "@dcl-sdk/utils": "latest",
     "colyseus.js": "^0.15.26",
     "core-js": "^3.31.0",
-    "mitt": "^3.0.0",
     "protobufjs": "^7.4.0"
   },
   "engines": {
