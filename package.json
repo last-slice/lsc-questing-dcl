@@ -3,18 +3,14 @@
   "version": "1.0.0",
   "description": "SDK7 library to connect Decentraland scenes to the custom Quest System",
   "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
   "scripts": {
-    "build": "rollup -c",
-    "watch": "rollup -c --watch",
-    "prepublishOnly": "npm run build"
+    "build": "rollup -c --environment BUILD:production",
+    "link": "npm link && rollup --watch -c --environment BUILD:production"
   },
+  "typings": "./dist/index.d.ts",
   "decentralandLibrary": {
     "main": "./dist/index.js"
   },
-  "files": [
-    "dist"
-  ],
   "keywords": [
     "dcl",
     "decentraland",
