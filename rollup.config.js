@@ -27,8 +27,8 @@ export default {
       sourceMap: true, // ✅ Explicitly allow source maps
     }),
     commonjs({
-      exclude: 'node_modules',
-      ignoreGlobal: true,
+      include: ["node_modules/**"], // ✅ Ensures `protobuf.js` is bundled
+      requireReturnsDefault: "auto",
     }),
     PROD && terser({ format: { comments: false } }),
   ],

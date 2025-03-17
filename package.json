@@ -27,19 +27,20 @@
     "dist"
   ],
   "devDependencies": {
+    "@dcl/js-runtime": "latest",
+    "@dcl/sdk": "latest",
     "@rollup/plugin-commonjs": "^21.0.2",
     "@rollup/plugin-node-resolve": "^13.1.3",
     "@rollup/plugin-typescript": "^8.3.1",
-    "@dcl/sdk": "latest",
-    "@dcl/js-runtime": "latest",
     "rollup": "^2.70.1",
     "rollup-plugin-terser": "^7.0.2"
   },
   "dependencies": {
-    "colyseus.js": "^0.15.26",
-    "mitt": "^3.0.0",
     "@dcl-sdk/utils": "latest",
-    "core-js": "^3.31.0"
+    "colyseus.js": "^0.15.26",
+    "core-js": "^3.31.0",
+    "mitt": "^3.0.0",
+    "protobufjs": "^7.4.0"
   },
   "engines": {
     "node": ">=16.0.0",
