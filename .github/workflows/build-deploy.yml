@@ -22,12 +22,14 @@ jobs:
         with:
           node-version: 20.x
           registry-url: "https://registry.npmjs.org/"
-      - name: install
+      - name: Install Dependencies
         run: npm install
-      - name: build
+      - name: Build Package
         run: npm run build
-      - name: Publish
-        uses: menduz/oddish-action@master
+      - name: Debug - Check if dist folder exists
+        run: ls -la dist
+      - name: Publish Package
+        uses: menduz/oddish-action@2.0.1
         with:
           access: public
         env:
