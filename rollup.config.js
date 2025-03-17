@@ -1,24 +1,34 @@
-import commonjs from "@rollup/plugin-commonjs";
-import resolve from "@rollup/plugin-node-resolve";
-import typescript from "@rollup/plugin-typescript";
-import { terser } from "rollup-plugin-terser";
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import typescript from '@rollup/plugin-typescript';
+import { terser } from 'rollup-plugin-terser';
+
+const packageJson = require('./package.json');
+const PROD = !!process.env.CI
 
 export default {
-  input: "src/index.ts",  // Main library entry file
+  input: 'src/index.ts',
+  context: 'globalThis',
+  external: [/@dcl\//, /@decentraland\//],
   output: [
     {
-      file: "dist/index.js",
-      format: "esm",
-      sourcemap: true
-    }
+      file: packageJson.main,
+      format: 'amd',
+      amd: {
+        id: packageJson.name
+      },
+    },
   ],
   plugins: [
-    resolve(),
-    commonjs(),
-    typescript({
-      tsconfig: "./tsconfig.json"
+    resolve({
+      preferBuiltins: false,
+      browser: true
     }),
-    terser()  // Minifies output for smaller file size
+    typescript({ tsconfig: './tsconfig.json' }),
+    commonjs({
+      exclude: 'node_modules',
+      ignoreGlobal: true,
+    }),
+    PROD && terser({ format: { comments: false } }),
   ],
-  external: ["@dcl/sdk", "@dcl/js-runtime"]  // Avoid bundling Decentraland SDK
 };

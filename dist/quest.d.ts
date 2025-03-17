@@ -1,0 +1,46 @@
+import { Room } from 'colyseus.js';
+import './polyfill';
+export declare const lscQuestEvent: import("mitt").Emitter<Record<import("mitt").EventType, unknown>>;
+export declare enum LSCQUEST_EVENTS {
+    QUEST_ERROR = "QUEST_ERROR",
+    QUEST_DATA = "QUEST_DATA",
+    QUEST_STARTED = "QUEST_STARTED",
+    QUEST_COMPLETE = "QUEST_COMPLETE",
+    QUEST_END = "QUEST_END",
+    QUEST_UPDATE = "QUEST_UPDATE",
+    QUEST_DISCONNECT = "QUEST_DISCONNECT",
+    QUEST_ACTION = "QUEST_ACTION",
+    QUEST_START = "QUEST_START",
+    QUEST_STEP_COMPLETE = "STEP_COMPLETE",
+    QUEST_TASK_COMPLETE = "TASK_COMPLETE"
+}
+export interface TaskDefinition {
+    taskId: string;
+    requiredCount?: number;
+    description?: string;
+    metaverse: 'DECENTRALAND' | 'HYPERFY';
+}
+export interface StepDefinition {
+    stepId: string;
+    name?: string;
+    tasks: TaskDefinition[];
+    prerequisiteStepIds?: string[];
+}
+export interface QuestDefinition {
+    questId: string;
+    version: number;
+    enabled: boolean;
+    questType: 'LINEAR' | 'OPEN_ENDED' | 'ONE_SHOT';
+    startTrigger?: 'EXPLICIT' | 'FIRST_TASK';
+    title?: string;
+    startTime?: number;
+    endTime?: number;
+    allowReplay?: boolean;
+    creator: string;
+    steps: StepDefinition[];
+}
+export declare const lscQuestConnections: Map<string, Room<any>>;
+export declare const lscQuestUserData: Map<string, QuestDefinition>;
+export declare function LSCQuestConnect(questId: string): Promise<void>;
+export declare function LSCQuestStart(questId: string): void;
+export declare function LSCQuestAction(questId: string, stepId: string, taskId: string): void;
