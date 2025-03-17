@@ -1,0 +1,50 @@
+{
+  "name": "@lsc/questing",
+  "version": "1.0.0",
+  "description": "SDK7 library to connect Decentraland scenes to the custom Quest System",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -c --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "decentralandLibrary": {
+    "main": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "dcl",
+    "decentraland",
+    "sdk",
+    "library"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/my-quest-lib"
+  },
+  "dependencies": {
+    "colyseus.js": "^0.15.26",
+    "mitt": "^3.0.0",
+     "@dcl-sdk/utils": "latest",
+     "core-js": "^3.31.0"
+  },
+  "devDependencies": {
+    "@dcl/sdk": "latest",
+    "@dcl/js-runtime": "latest",
+    "typescript": "^4.9.5",
+    "rollup": "^2.70.1",
+    "@rollup/plugin-commonjs": "^21.0.2",
+    "@rollup/plugin-node-resolve": "^13.1.3",
+    "@rollup/plugin-typescript": "^8.3.1",
+    "rollup-plugin-terser": "^7.0.2"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  }
+}
