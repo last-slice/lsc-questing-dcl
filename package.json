@@ -21,7 +21,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/last-slice/lsc-questing-dcl"
+    "url": "git+https://github.com/last-slice/lsc-questing-dcl.git"
   },
   "files": [
     "dist"
@@ -38,8 +38,8 @@
   "dependencies": {
     "colyseus.js": "^0.15.26",
     "mitt": "^3.0.0",
-     "@dcl-sdk/utils": "latest",
-     "core-js": "^3.31.0"
+    "@dcl-sdk/utils": "latest",
+    "core-js": "^3.31.0"
   },
   "engines": {
     "node": ">=16.0.0",
