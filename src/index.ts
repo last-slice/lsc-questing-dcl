@@ -1,19 +1,28 @@
 import { Client, Room } from 'colyseus.js'
 import mitt from 'mitt'
 import { getRealm } from '~system/Runtime'
-import * as utils from '@dcl-sdk/utils'
 import {getPlayer} from "@dcl/sdk/players";
 import './polyfill'
 import { engine } from '@dcl/sdk/ecs';
 
-const DEBUG = true
+const DEBUG = false
 let player:any
 let pendingQuestConnections:string[] = []
 
 export const lscQuestEvent = mitt()
 
-export interface QuestAction {
-  actionId: string
+export enum LSCQUEST_EVENTS {
+  QUEST_ERROR = 'QUEST_ERROR',
+  QUEST_DATA = 'QUEST_DATA',
+  QUEST_STARTED = 'QUEST_STARTED',
+  QUEST_COMPLETE = 'QUEST_COMPLETE',
+  QUEST_END = 'QUEST_END',
+  QUEST_UPDATE = 'QUEST_UPDATE',
+  QUEST_DISCONNECT = 'QUEST_DISCONNECT',
+  QUEST_ACTION = 'QUEST_ACTION',
+  QUEST_START = 'QUEST_START',
+  QUEST_STEP_COMPLETE = 'STEP_COMPLETE',
+  QUEST_TASK_COMPLETE = 'TASK_COMPLETE'
 }
 
 export interface TaskDefinition {
@@ -49,39 +58,48 @@ export const lscQuestConnections = new Map<string, Room>()
 export const lscQuestUserData = new Map<string, QuestDefinition>()
 
 /**
- * An example of how you might wrap your quest-connection logic in an async function.
+ * Connect to a Quest within the LSC Quest System
  *
- * @param questId - The LSC Quest Id to connect
+ * @param questId
  */
 export async function LSCQuestConnect(questId:string) {
-  console.log('connecting to player quest system')
   engine.addSystem(CheckPlayerSystem)
   engine.addSystem(ConnectQuestSystem)
 
   if(lscQuestConnections.has(questId))  return
-
   pendingQuestConnections.push(questId)
-  console.log('added quest to pending')
 }
 
+/**
+ * Start a specific Quest in the LSC Quest System
+ *
+ * @param questId
+ */
 export function LSCQuestStart(questId:string){
   let questConnection = lscQuestConnections.get(questId)
   if(!questConnection)  return
 
   try{
-    questConnection.send('QUEST_START', {questId})
+    questConnection.send(LSCQUEST_EVENTS.QUEST_START, {questId})
   }
   catch(e:any){
     console.log('error sending quest action', e)
   }
 }
 
+/**
+ * Run a Quest Action within the LSC Quest System
+ *
+ * @param questId
+ * @param stepId
+ * @param taskId
+ */
 export function LSCQuestAction(questId:string, stepId:string, taskId:string){
   let questConnection = lscQuestConnections.get(questId)
   if(!questConnection)  return
 
   try{
-    questConnection.send('QUEST_ACTION', {questId, stepId, taskId})
+    questConnection.send(LSCQUEST_EVENTS.QUEST_ACTION, {questId, stepId, taskId, metaverse:"DECENTRALAND"})
   }
   catch(e:any){
     console.log('error sending quest action', e)
@@ -89,35 +107,45 @@ export function LSCQuestAction(questId:string, stepId:string, taskId:string){
 }
 
 function setLSCQuestListeners(room:Room, userId:string){
-  room.onMessage("ERROR", (info:any)=>{
+  room.onMessage(LSCQUEST_EVENTS.QUEST_ERROR, (info:any)=>{
     console.log('quest error ', info)
-    lscQuestEvent.emit("QUEST_ERROR", {info})
+    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_ERROR, info)
   })
 
-  room.onMessage("QUEST_DATA", (info:any)=>{
+  room.onMessage(LSCQUEST_EVENTS.QUEST_DATA, (info:any)=>{
     console.log('user quest data ', info)
     lscQuestUserData.set(userId, info)
-    lscQuestEvent.emit("QUEST_DATA", {info})
+    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_DATA, info)
   })
 
-  room.onMessage("QUEST_STARTED", (info:any)=>{
+  room.onMessage(LSCQUEST_EVENTS.QUEST_STARTED, (info:any)=>{
     console.log('started quest ', info)
-    lscQuestEvent.emit("QUEST_STARTED", {info})
+    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_STARTED, info)
   })
 
-  room.onMessage("QUEST_COMPLETE", (info:any)=>{
+  room.onMessage(LSCQUEST_EVENTS.QUEST_COMPLETE, (info:any)=>{
     console.log('complete quest ', info)
-    lscQuestEvent.emit("QUEST_COMPLETE", {info})
+    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_COMPLETE, info)
   })
 
-  room.onMessage("QUEST_END", (info:any)=>{
+  room.onMessage(LSCQUEST_EVENTS.QUEST_END, (info:any)=>{
     console.log('ended quest ', info)
-    lscQuestEvent.emit("QUEST_END", {info})
+    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_END, info)
   })
 
-  room.onMessage("QUEST_UPDATE", (info:any)=>{
+  room.onMessage(LSCQUEST_EVENTS.QUEST_UPDATE, (info:any)=>{
     console.log('update quest ', info)
-    lscQuestEvent.emit("QUEST_UPDATE", {info})
+    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_UPDATE, info)
+  })
+
+  room.onMessage(LSCQUEST_EVENTS.QUEST_STEP_COMPLETE, (info:any)=>{
+    console.log('step complete quest ', info)
+    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_UPDATE, info)
+  })
+
+  room.onMessage(LSCQUEST_EVENTS.QUEST_TASK_COMPLETE, (info:any)=>{
+    console.log('task complete quest ', info)
+    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_UPDATE, info)
   })
 }
 
@@ -136,10 +164,7 @@ function CheckPlayerSystem(dt:number){
 }
 
 function ConnectQuestSystem(){
-  console.log('connect quest system')
   if(!player) return
-
-  console.log('player is found')
 
   if(pendingQuestConnections.length > 0){
     let pendingQuestId:string = "" + pendingQuestConnections.shift()
@@ -167,9 +192,13 @@ async function makeQuestConnection(questId:string){
     lscQuestConnections.set(questId, room)
     setLSCQuestListeners(room, player.userId)
 
+    room.onLeave((code:number, reason?:string)=>{
+        lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_DISCONNECT, questId)
+    })
+
     return room
   } catch (error: any) {
-    console.error('Error connecting to quest system', error)
+    console.error('Error connecting to LSC Quest System', error)
     throw error
   }
 }
