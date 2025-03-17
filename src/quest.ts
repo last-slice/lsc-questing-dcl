@@ -1,15 +1,16 @@
 import { Client, Room } from 'colyseus.js'
-// import mitt from 'mitt'
+import mitt from 'mitt'
 import { getRealm } from '~system/Runtime'
-import {getPlayer} from "@dcl/sdk/players";
 import './polyfill'
-import { engine } from '@dcl/sdk/ecs';
 
-const DEBUG = false
+const DEBUG = true
+
 let player:any
 let pendingQuestConnections:string[] = []
+let dclEngine:any
+let dclGetPlayer:any
 
-// export const lscQuestEvent = mitt()
+export const lscQuestEvent = mitt()
 
 export enum LSCQUEST_EVENTS {
   QUEST_ERROR = 'QUEST_ERROR',
@@ -25,21 +26,21 @@ export enum LSCQUEST_EVENTS {
   QUEST_TASK_COMPLETE = 'TASK_COMPLETE'
 }
 
-export interface TaskDefinition {
+interface TaskDefinition {
   taskId: string;
   requiredCount?: number;
   description?: string;
   metaverse: 'DECENTRALAND' | 'HYPERFY';
 }
 
-export interface StepDefinition {
+interface StepDefinition {
   stepId: string;
   name?: string;
   tasks: TaskDefinition[];
   prerequisiteStepIds?: string[];
 }
 
-export interface QuestDefinition {
+interface QuestDefinition {
     questId: string;
     version: number;
     enabled:boolean,
@@ -62,7 +63,10 @@ export const lscQuestUserData = new Map<string, QuestDefinition>()
  *
  * @param questId
  */
-export async function LSCQuestConnect(questId:string) {
+export async function LSCQuestConnect(engine:any, getPlayer:any, questId:string) {
+  dclEngine = engine
+  dclGetPlayer = getPlayer
+  
   engine.addSystem(CheckPlayerSystem)
   engine.addSystem(ConnectQuestSystem)
 
@@ -109,43 +113,43 @@ export function LSCQuestAction(questId:string, stepId:string, taskId:string){
 function setLSCQuestListeners(room:Room, userId:string){
   room.onMessage(LSCQUEST_EVENTS.QUEST_ERROR, (info:any)=>{
     console.log('quest error ', info)
-    // lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_ERROR, info)
+    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_ERROR, info)
   })
 
   room.onMessage(LSCQUEST_EVENTS.QUEST_DATA, (info:any)=>{
     console.log('user quest data ', info)
     lscQuestUserData.set(userId, info)
-    // lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_DATA, info)
+    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_DATA, info)
   })
 
   room.onMessage(LSCQUEST_EVENTS.QUEST_STARTED, (info:any)=>{
     console.log('started quest ', info)
-    // lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_STARTED, info)
+    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_STARTED, info)
   })
 
   room.onMessage(LSCQUEST_EVENTS.QUEST_COMPLETE, (info:any)=>{
     console.log('complete quest ', info)
-    // lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_COMPLETE, info)
+    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_COMPLETE, info)
   })
 
   room.onMessage(LSCQUEST_EVENTS.QUEST_END, (info:any)=>{
     console.log('ended quest ', info)
-    // lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_END, info)
+    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_END, info)
   })
 
   room.onMessage(LSCQUEST_EVENTS.QUEST_UPDATE, (info:any)=>{
     console.log('update quest ', info)
-    // lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_UPDATE, info)
+    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_UPDATE, info)
   })
 
   room.onMessage(LSCQUEST_EVENTS.QUEST_STEP_COMPLETE, (info:any)=>{
     console.log('step complete quest ', info)
-    // lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_UPDATE, info)
+    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_UPDATE, info)
   })
 
   room.onMessage(LSCQUEST_EVENTS.QUEST_TASK_COMPLETE, (info:any)=>{
     console.log('task complete quest ', info)
-    // lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_UPDATE, info)
+    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_UPDATE, info)
   })
 }
 
@@ -154,11 +158,11 @@ function CheckPlayerSystem(dt:number){
   if(time > 0){
     time -= dt
   }else{
-    player = getPlayer()
+    player = dclGetPlayer()
     if(!player){
       time = 1
     }else{
-      engine.removeSystem(CheckPlayerSystem)
+      dclEngine.removeSystem(CheckPlayerSystem)
     }
   }
 }
@@ -183,8 +187,8 @@ async function makeQuestConnection(questId:string){
   }
 
   let client = new Client(DEBUG ? 
-    "http://localhost:5335" : 
-    "http://localhost:5335"
+    {hostname:'localhost', secure:false, port:5335} : 
+    {hostname:'localhost', secure:true, port:5335}
   )
 
   try {
@@ -193,7 +197,7 @@ async function makeQuestConnection(questId:string){
     setLSCQuestListeners(room, player.userId)
 
     room.onLeave((code:number, reason?:string)=>{
-        // lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_DISCONNECT, questId)
+        lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_DISCONNECT, {questId, code, reason})
     })
 
     return room

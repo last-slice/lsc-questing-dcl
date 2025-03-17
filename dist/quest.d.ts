@@ -14,19 +14,19 @@ export declare enum LSCQUEST_EVENTS {
     QUEST_STEP_COMPLETE = "STEP_COMPLETE",
     QUEST_TASK_COMPLETE = "TASK_COMPLETE"
 }
-export interface TaskDefinition {
+interface TaskDefinition {
     taskId: string;
     requiredCount?: number;
     description?: string;
     metaverse: 'DECENTRALAND' | 'HYPERFY';
 }
-export interface StepDefinition {
+interface StepDefinition {
     stepId: string;
     name?: string;
     tasks: TaskDefinition[];
     prerequisiteStepIds?: string[];
 }
-export interface QuestDefinition {
+interface QuestDefinition {
     questId: string;
     version: number;
     enabled: boolean;
@@ -41,6 +41,7 @@ export interface QuestDefinition {
 }
 export declare const lscQuestConnections: Map<string, Room<any>>;
 export declare const lscQuestUserData: Map<string, QuestDefinition>;
-export declare function LSCQuestConnect(questId: string): Promise<void>;
+export declare function LSCQuestConnect(engine: any, getPlayer: any, questId: string): Promise<void>;
 export declare function LSCQuestStart(questId: string): void;
 export declare function LSCQuestAction(questId: string, stepId: string, taskId: string): void;
+export {};

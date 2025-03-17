@@ -1,1 +1,1 @@
-import 'core-js/features/url';
+export {};

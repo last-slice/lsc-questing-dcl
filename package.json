@@ -1,6 +1,6 @@
 {
   "name": "lsc-questing-dcl",
-  "version": "1.1.4",
+  "version": "1.1.8",
   "description": "SDK7 library to connect Decentraland scenes to the custom Quest System",
   "main": "./dist/index.js",
   "scripts": {
@@ -36,10 +36,10 @@
     "rollup-plugin-terser": "^7.0.2"
   },
   "dependencies": {
+    "@dcl/js-runtime": "latest",
+    "@dcl/sdk": "latest",
     "@dcl-sdk/utils": "latest",
-    "colyseus.js": "^0.15.26",
-    "core-js": "^3.31.0",
-    "protobufjs": "^7.4.0"
+    "colyseus.js": "^0.15.26"
   },
   "engines": {
     "node": ">=16.0.0",

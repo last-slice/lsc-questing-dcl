@@ -1,35 +1,28 @@
-import resolve from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
-import typescript from '@rollup/plugin-typescript';
-import { terser } from 'rollup-plugin-terser';
-
-const packageJson = require('./package.json');
-const PROD = !!process.env.CI;
+import resolve from "@rollup/plugin-node-resolve";
+import commonjs from "@rollup/plugin-commonjs";
+import typescript from "@rollup/plugin-typescript";
+import { terser } from "rollup-plugin-terser";
 
 export default {
-  input: 'src/index.ts',
-  context: 'globalThis',
-  external: ["@dcl/sdk", "@dcl/js-runtime"], // ✅ Ensure DCL SDK is external
+  input: "src/index.ts",
   output: [
     {
-      file: packageJson.main,
-      format: 'esm',  // ✅ Use ESM instead of AMD
-      sourcemap: true,  // ✅ Fix sourcemap issue
+      file: "dist/index.js",
+      format: "esm",
+      sourcemap: true,
     },
   ],
+  external: ["@dcl/sdk", "@dcl/js-runtime", "colyseus"], // ✅ Externalize dependencies
   plugins: [
     resolve({
+      browser: true, // ✅ Ensures browser compatibility
       preferBuiltins: false,
-      browser: true
-    }),
-    typescript({
-      tsconfig: './tsconfig.json',
-      sourceMap: true, // ✅ Explicitly allow source maps
     }),
     commonjs({
-      include: ["node_modules/**"], // ✅ Ensures `protobuf.js` is bundled
-      requireReturnsDefault: "auto",
+      include: /node_modules/, // ✅ Fix for `protobufjs/minimal.js`
+      requireReturnsDefault: "auto", // ✅ Ensures correct `default` handling
     }),
-    PROD && terser({ format: { comments: false } }),
+    typescript({ tsconfig: "./tsconfig.json" }),
+    terser(),
   ],
 };
