@@ -12,12 +12,16 @@ name: Publish NPM package
 jobs:
   install:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # ✅ Required for provenance in GitHub Actions
+      contents: read
     steps:
       - uses: actions/checkout@master
       - name: Use Node.js 20.x
         uses: actions/setup-node@v1
         with:
           node-version: 20.x
+          registry-url: "https://registry.npmjs.org/"
       - name: install
         run: npm install
       - name: build
@@ -25,7 +29,6 @@ jobs:
       - name: Publish
         uses: menduz/oddish-action@master
         with:
-          #cwd: ./dist
           access: public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
