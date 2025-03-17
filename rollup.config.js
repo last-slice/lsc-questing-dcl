@@ -4,19 +4,17 @@ import typescript from '@rollup/plugin-typescript';
 import { terser } from 'rollup-plugin-terser';
 
 const packageJson = require('./package.json');
-const PROD = !!process.env.CI
+const PROD = !!process.env.CI;
 
 export default {
   input: 'src/index.ts',
   context: 'globalThis',
-  external: [/@dcl\//, /@decentraland\//],
+  external: ["@dcl/sdk", "@dcl/js-runtime"], // ✅ Ensure DCL SDK is external
   output: [
     {
       file: packageJson.main,
-      format: 'amd',
-      amd: {
-        id: packageJson.name
-      },
+      format: 'esm',  // ✅ Use ESM instead of AMD
+      sourcemap: true,  // ✅ Fix sourcemap issue
     },
   ],
   plugins: [
@@ -24,7 +22,10 @@ export default {
       preferBuiltins: false,
       browser: true
     }),
-    typescript({ tsconfig: './tsconfig.json' }),
+    typescript({
+      tsconfig: './tsconfig.json',
+      sourceMap: true, // ✅ Explicitly allow source maps
+    }),
     commonjs({
       exclude: 'node_modules',
       ignoreGlobal: true,

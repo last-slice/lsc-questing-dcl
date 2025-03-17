@@ -10,7 +10,8 @@
     "removeComments": true,
     "declaration": true,
     "declarationDir": ".",
-    "outDir": "dist"
+    "outDir": "dist",
+    "sourceMap": true
   },
   "extends": "@dcl/sdk/types/tsconfig.ecs7.json"
 }
