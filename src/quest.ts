@@ -3,7 +3,7 @@ import mitt from 'mitt'
 import { getRealm } from '~system/Runtime'
 import './polyfill'
 
-const DEBUG = true
+const DEBUG = false
 
 let player:any
 let pendingQuestConnections:string[] = []
@@ -47,12 +47,11 @@ interface QuestDefinition {
     questType: 'LINEAR' | 'OPEN_ENDED' | 'ONE_SHOT'; 
     startTrigger?: 'EXPLICIT' | 'FIRST_TASK';
     title?: string;
-    startTime?: number;        // Unix timestamp in ms
-    endTime?: number;          // Unix timestamp in ms
-    allowReplay?: boolean;
-    creator: string;   // e.g. an ethAddress
-    // The new field:
-    steps: StepDefinition[];        // array of steps in the quest
+    startTime?: number;
+    endTime?: number;
+    allowReplay: boolean;
+    creator: string;
+    steps: StepDefinition[];
 }
 
 export const lscQuestConnections = new Map<string, Room>()
@@ -144,12 +143,12 @@ function setLSCQuestListeners(room:Room, userId:string){
 
   room.onMessage(LSCQUEST_EVENTS.QUEST_STEP_COMPLETE, (info:any)=>{
     console.log('step complete quest ', info)
-    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_UPDATE, info)
+    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_STEP_COMPLETE, info)
   })
 
   room.onMessage(LSCQUEST_EVENTS.QUEST_TASK_COMPLETE, (info:any)=>{
     console.log('task complete quest ', info)
-    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_UPDATE, info)
+    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_TASK_COMPLETE, info)
   })
 }
 
