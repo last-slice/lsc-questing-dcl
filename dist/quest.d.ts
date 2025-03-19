@@ -35,7 +35,7 @@ interface QuestDefinition {
     title?: string;
     startTime?: number;
     endTime?: number;
-    allowReplay?: boolean;
+    allowReplay: boolean;
     creator: string;
     steps: StepDefinition[];
 }

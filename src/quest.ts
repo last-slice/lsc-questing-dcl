@@ -187,8 +187,8 @@ async function makeQuestConnection(questId:string){
 
   let client = new Client(DEBUG ? 
     {hostname:'localhost', secure:false, port:5335} : 
-    {hostname:'lkdcl.co', pathname:'/questing', secure:true, port:5335}
-  )
+    {hostname:'lkdcl.co', pathname:'/questing', secure:true}
+  )//
 
   try {
     const room: Room = await client.joinOrCreate('angzaar_questing', options)
