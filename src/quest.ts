@@ -136,6 +136,11 @@ function setLSCQuestListeners(room:Room, userId:string){
     lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_END, info)
   })
 
+  room.onMessage(LSCQUEST_EVENTS.QUEST_DATA, (info:any)=>{
+    console.log('quest data ', info)
+    lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_DATA, info)
+  })
+
   room.onMessage(LSCQUEST_EVENTS.QUEST_UPDATE, (info:any)=>{
     console.log('update quest ', info)
     lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_UPDATE, info)
@@ -188,7 +193,7 @@ async function makeQuestConnection(questId:string){
   let client = new Client(DEBUG ? 
     {hostname:'localhost', secure:false, port:5335} : 
     {hostname:'lkdcl.co', pathname:'/questing', secure:true}
-  )//
+  )
 
   try {
     const room: Room = await client.joinOrCreate('angzaar_questing', options)
