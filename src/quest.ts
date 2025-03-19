@@ -192,7 +192,7 @@ async function makeQuestConnection(questId:string){
 
   let client = new Client(DEBUG ? 
     {hostname:'localhost', secure:false, port:5335} : 
-    {hostname:'lkdcl.co', pathname:'/questing', secure:true}
+    {hostname:'angzaar-plaza.dcl-iwb.co', pathname:'/ws', secure:true}
   )
 
   try {
