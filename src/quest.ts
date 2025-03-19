@@ -188,7 +188,7 @@ async function makeQuestConnection(questId:string){
 
   let client = new Client(DEBUG ? 
     {hostname:'localhost', secure:false, port:5335} : 
-    {hostname:'localhost', secure:true, port:5335}
+    {hostname:'lkdcl.co', pathname:'/questing', secure:true, port:5335}
   )
 
   try {
@@ -197,6 +197,7 @@ async function makeQuestConnection(questId:string){
     setLSCQuestListeners(room, player.userId)
 
     room.onLeave((code:number, reason?:string)=>{
+      console.log('left quest room', questId, code, reason)
         lscQuestEvent.emit(LSCQUEST_EVENTS.QUEST_DISCONNECT, {questId, code, reason})
     })
 
