@@ -39,7 +39,7 @@
     "@dcl-sdk/utils": "latest",
     "@dcl/js-runtime": "latest",
     "@dcl/sdk": "latest",
-    "colyseus.js": "^0.15.26",
+    "colyseus.js": "^0.15.10",
     "mitt": "^3.0.1",
     "@types/node": ">=18.0.0"
   },
