@@ -40,7 +40,8 @@
     "@dcl/js-runtime": "latest",
     "@dcl/sdk": "latest",
     "colyseus.js": "^0.15.26",
-    "mitt": "^3.0.1"
+    "mitt": "^3.0.1",
+    "@types/node": ">=18.0.0"
   },
   "engines": {
     "node": ">=16.0.0",
