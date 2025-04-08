@@ -1,0 +1,20 @@
+import { Entity, YGUnit } from "@dcl/sdk/ecs";
+import { Color4 } from "@dcl/sdk/math";
+export declare let dimensions: any;
+export declare function uiSizer(dt: number): void;
+export declare function calculateImageDimensions(width: number, aspectRatio: number): any;
+export declare function calculateSquareImageDimensions(percentage: number): any;
+export declare function addLineBreak(text: string, bubble: boolean | undefined, lineCount: number, large?: number): string;
+export declare function sizeFont(large: number, small: number): number;
+export declare function getImageAtlasMapping(data?: ImageAtlasData): number[];
+export type ImageAtlasData = {
+    atlasWidth: number;
+    atlasHeight: number;
+    sourceWidth: number;
+    sourceHeight: number;
+    sourceLeft: number;
+    sourceTop: number;
+};
+export declare function getAspect(panel: any): number;
+export declare function getUITransform(component: any, entiy: Entity, height?: number, width?: number, unit?: YGUnit): any;
+export declare function getRandomColor4(alpha?: number): Color4.MutableColor4;

@@ -18,17 +18,13 @@ export declare enum LSCQUEST_EVENTS {
 }
 interface TaskDefinition {
     taskId: string;
-    requiredCount: number;
-    count: number;
-    completed: boolean;
-    description: string;
+    requiredCount?: number;
+    description?: string;
     metaverse: 'DECENTRALAND' | 'HYPERFY';
-    prerequisiteTaskIds: string[];
 }
 interface StepDefinition {
     stepId: string;
     name?: string;
-    completed: boolean;
     tasks: TaskDefinition[];
     prerequisiteStepIds?: string[];
 }
@@ -42,13 +38,12 @@ interface QuestDefinition {
     startTime?: number;
     endTime?: number;
     allowReplay: boolean;
-    completed: boolean;
     creator: string;
     steps: StepDefinition[];
 }
 export declare const lscQuestConnections: Map<string, Room<any>>;
 export declare const lscQuestUserData: Map<string, QuestDefinition>;
-export declare function LSCQuestConnect(questId: string): Promise<void>;
+export declare function LSCQuestConnect(engine: any, getPlayer: any, questId: string): Promise<void>;
 export declare function LSCQuestStart(questId: string): void;
 export declare function LSCQuestAction(questId: string, stepId: string, taskId: string): void;
 export declare function LSCQuestLeaderboard(questId: string, position: Vector3, updateInterval: number, limit: number, order?: 'asc' | 'asc', sortBy?: string, completed?: boolean, showBackground?: boolean, title?: string): void;
