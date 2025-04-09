@@ -7,13 +7,6 @@ import { Client, Room } from 'colyseus.js'
 import mitt from 'mitt'
 import './polyfill'
 
-const DEBUG = false
-
-let player:any
-let pendingQuestConnections:string[] = []
-
-export const lscQuestEvent = mitt()
-
 export enum LSCQUEST_EVENTS {
   QUEST_CONNECTION = 'QUEST_CONNECTION',
   QUEST_ERROR = 'QUEST_ERROR',
@@ -61,8 +54,24 @@ interface QuestDefinition {
     steps: StepDefinition[];
 }
 
+const DEBUG = false
+let LOCAL_CREATOR = false
+
+let player:any
+let pendingQuestConnections:string[] = []
+
+export const lscQuestEvent = mitt()
 export const lscQuestConnections = new Map<string, Room>()
 export const lscQuestUserData = new Map<string, QuestDefinition>()
+
+/**
+ * Set the local creator for testing
+ *
+ * @param questId
+ */
+export async function LSCQuestLocalCreator(value:boolean) {
+  LOCAL_CREATOR = value
+}
 
 /**
  * Connect to a Quest within the LSC Quest System
@@ -243,7 +252,7 @@ async function makeQuestConnection(questId:string){
   const options:any = {
     userId: player.userId,
     name: player.name,
-    realm: realm.realmInfo?.baseUrl,
+    realm: LOCAL_CREATOR ? "local-testing" : realm.realmInfo?.baseUrl,
     questId: questId,
   }
 

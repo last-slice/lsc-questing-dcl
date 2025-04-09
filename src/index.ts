@@ -6,7 +6,8 @@ export {
   LSCQuestConnect, 
   LSCQuestStart, 
   LSCQuestAction,
-  LSCQuestLeaderboard
+  LSCQuestLeaderboard,
+  LSCQuestLocalCreator
 } from './quest'
 
 export {createQuestUI, questUIComponent, questUI, showLSCQuestIcon} from './ui'

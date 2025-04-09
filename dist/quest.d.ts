@@ -1,7 +1,6 @@
 import { TransformType } from '@dcl/sdk/ecs';
 import { Room } from 'colyseus.js';
 import './polyfill';
-export declare const lscQuestEvent: import("mitt").Emitter<Record<import("mitt").EventType, unknown>>;
 export declare enum LSCQUEST_EVENTS {
     QUEST_CONNECTION = "QUEST_CONNECTION",
     QUEST_ERROR = "QUEST_ERROR",
@@ -46,8 +45,10 @@ interface QuestDefinition {
     creator: string;
     steps: StepDefinition[];
 }
+export declare const lscQuestEvent: import("mitt").Emitter<Record<import("mitt").EventType, unknown>>;
 export declare const lscQuestConnections: Map<string, Room<any>>;
 export declare const lscQuestUserData: Map<string, QuestDefinition>;
+export declare function LSCQuestLocalCreator(value: boolean): Promise<void>;
 export declare function LSCQuestConnect(questId: string): Promise<void>;
 export declare function LSCQuestStart(questId: string): void;
 export declare function LSCQuestAction(questId: string, stepId: string, taskId: string): void;
