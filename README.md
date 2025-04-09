@@ -32,7 +32,7 @@ npm  i  lsc-questing-dcl
 ```
 ## System Connection
 
-### 1. Import The Forge questing library into your code
+### 1. Import the neat library into your code
 ```ts
 import {LSCQuestAction,LSCQuestConnect} from  'lsc-questing-dcl'
 ```
@@ -104,4 +104,14 @@ LSCQuestLeaderboard(
 	true, // showBackground
 	"Egg Hunt 2025"  // title
 )
+```
+
+## Quest Testing Locally
+To test your scene setup locally, you must call this function **BEFORE** connecting to your quest. This will tell our server to allow the quest creator to connect to the quest system without failing authentication.
+
+Parameter(s):
+ - localUser (boolean)
+
+  ```ts
+LSCQuestLocalCreator(true)
 ```
