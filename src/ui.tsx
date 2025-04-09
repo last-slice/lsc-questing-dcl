@@ -85,10 +85,10 @@ const QuestHud = () => {
             position: {
                 top: '15%',
                 right: '25%'
-            },
-            borderRadius:'10%',
-            borderWidth: '25%',
-            borderColor: Color4.create(42/255,58/255,90/255,1)
+            }
+            // borderRadius:'10%',
+            // borderWidth: '25%',
+            // borderColor: Color4.create(42/255,58/255,90/255,1)
         }}
         uiBackground={{color:Color4.create(18/255,23/255,37/255,1)}}
         // uiBackground={{
