@@ -18,7 +18,7 @@ let visibleTasks:any[] = []
 
 let atlas2 = 'https://dclstreams.com/media/images/9f2b0cb5-2a9a-473a-8cf8-bdbe5219f131.png'
 
-function questUI(){
+export function questUI(){
     return(
         <UiEntity
         key="angzaar-quest-ui"
