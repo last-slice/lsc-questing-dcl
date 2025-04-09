@@ -32,7 +32,7 @@ npm  i  lsc-questing-dcl
 ```
 ## System Connection
 
-### 1. Import the neat library into your code
+### 1. Import The Forge questing library into your code
 ```ts
 import {LSCQuestAction,LSCQuestConnect} from  'lsc-questing-dcl'
 ```
