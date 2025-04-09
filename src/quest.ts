@@ -230,7 +230,6 @@ function CheckPlayerSystem(dt:number){
 
 function ConnectQuestSystem(){
   if(!player) return
-  console.log('connecting quest system')
 
   if(pendingQuestConnections.length > 0){
     let pendingQuestId:string = "" + pendingQuestConnections.shift()
@@ -498,7 +497,7 @@ export function LSCQuestLeaderboard(
       let params = [`completed=${completed}`, `order=${order}`, `limit=${limit}`, `sortBy=${sortBy}`]
       let response = await fetch(`http://localhost:5353/api/quests/${questId}/users?` + params.join('&')) 
       let data = await response.json()
-      console.log('leaderboard data:', data);
+      // console.log('leaderboard data:', data);
       
       // Update leaderboard with data
       for(let i = 0; i < leaderboardRows.length; i++) {
