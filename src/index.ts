@@ -9,4 +9,4 @@ export {
   LSCQuestLeaderboard
 } from './quest'
 
-export {createQuestUI, questUIComponent, questUI} from './ui'
+export {createQuestUI, questUIComponent, questUI, showLSCQuestIcon} from './ui'

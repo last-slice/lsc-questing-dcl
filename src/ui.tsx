@@ -6,6 +6,7 @@ import { uiSizes } from './uiConfig'
 import { lscQuestUserData } from './quest'
 
 let showHud = false
+let showQuestIcon = true
 let questView = "main"
 let currentQuest = ""
 let currentStep = ""
@@ -17,6 +18,10 @@ let visibleSteps:any[] = []
 let visibleTasks:any[] = []
 
 let atlas2 = 'https://dclstreams.com/media/images/9f2b0cb5-2a9a-473a-8cf8-bdbe5219f131.png'
+
+export function showLSCQuestIcon(value:boolean){
+    showQuestIcon = value
+}
 
 export function questUI(){
     return(
@@ -47,7 +52,8 @@ export function questUI(){
             position: {
                 top: '13%',
                 right: '1%',
-            }
+            },
+            display: showQuestIcon? 'flex' : 'none'
         }}
         uiBackground={{
             textureMode: 'stretch',
