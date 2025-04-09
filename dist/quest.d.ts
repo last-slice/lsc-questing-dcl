@@ -1,4 +1,4 @@
-import { Vector3 } from '@dcl/sdk/math';
+import { TransformType } from '@dcl/sdk/ecs';
 import { Room } from 'colyseus.js';
 import './polyfill';
 export declare const lscQuestEvent: import("mitt").Emitter<Record<import("mitt").EventType, unknown>>;
@@ -51,5 +51,5 @@ export declare const lscQuestUserData: Map<string, QuestDefinition>;
 export declare function LSCQuestConnect(questId: string): Promise<void>;
 export declare function LSCQuestStart(questId: string): void;
 export declare function LSCQuestAction(questId: string, stepId: string, taskId: string): void;
-export declare function LSCQuestLeaderboard(questId: string, position: Vector3, updateInterval: number, limit: number, order?: 'asc' | 'asc', sortBy?: string, completed?: boolean, showBackground?: boolean, title?: string): void;
+export declare function LSCQuestLeaderboard(questId: string, transform: TransformType, updateInterval: number, limit: number, order?: 'asc' | 'asc', sortBy?: string, completed?: boolean, showBackground?: boolean, title?: string): void;
 export {};

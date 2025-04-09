@@ -1,4 +1,4 @@
-import { engine, Entity, Material, MeshRenderer, TextAlignMode, TextShape, Transform } from '@dcl/sdk/ecs'
+import { engine, Entity, Material, MeshRenderer, TextAlignMode, TextShape, Transform, TransformType } from '@dcl/sdk/ecs'
 import { ReactEcsRenderer} from '@dcl/sdk/react-ecs'
 import { Color4, Vector3 } from '@dcl/sdk/math'
 import {getPlayer} from "@dcl/sdk/players";
@@ -284,7 +284,7 @@ async function makeQuestConnection(questId:string){
  */
 export function LSCQuestLeaderboard(
   questId:string, 
-  position:Vector3, 
+  transform:TransformType, 
   updateInterval:number,
   limit:number,
   order: 'asc' | 'asc' = 'asc',
@@ -295,7 +295,7 @@ export function LSCQuestLeaderboard(
   ){
     
   let leaderboard = engine.addEntity()
-  Transform.create(leaderboard, {position})
+  Transform.create(leaderboard, transform)
   
   // Row dimensions
   const rowWidth = 3
