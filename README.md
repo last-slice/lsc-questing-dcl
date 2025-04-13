@@ -99,7 +99,7 @@ LSCQuestLeaderboard(
 	5, // updateInterval in seconds
 	10, // limit of users to show
 	'asc', // order 'asc' or 'desc'
-	'elapsedTime', // sortBy 'elapsedTime' or other quest field
+	'elapsedTime', // sortBy 'elapsedTime' 'progress'
 	true, // completed users only
 	true, // showBackground
 	"Egg Hunt 2025"  // title
