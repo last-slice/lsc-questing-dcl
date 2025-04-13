@@ -1,7 +1,7 @@
 import { LOCAL_CREATOR, lscQuestConnections } from "./quest"
 import { Client } from "colyseus.js"
 import { Room } from "colyseus.js"
-import { LSCQUEST_EVENTS } from "./definitions"
+import { DEBUG, LSCQUEST_EVENTS } from "./definitions"
 import { lscQuestEvent, lscQuestUserData, pendingQuestConnections } from "./quest"
 import { getPlayer } from "@dcl/sdk/players"
 import { getRealm } from "~system/Runtime"
