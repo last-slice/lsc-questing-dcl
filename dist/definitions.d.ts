@@ -1,4 +1,4 @@
-export declare const DEBUG = false;
+export declare const DEBUG = true;
 export declare enum LSCQUEST_EVENTS {
     QUEST_CONNECTION = "QUEST_CONNECTION",
     QUEST_ERROR = "QUEST_ERROR",

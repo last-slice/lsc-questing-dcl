@@ -22,7 +22,7 @@ export function LSCQuestLeaderboard(
   transform:TransformType, 
   updateInterval:number,
   limit:number,
-  order: 'asc' | 'asc' = 'asc',
+  order: 'asc' | 'desc' = 'asc',
   sortBy:string = 'elapsedTime',
   completed:boolean = true,
   showBackground:boolean = true,
@@ -39,6 +39,7 @@ export function LSCQuestLeaderboard(
   // Helper function to format the score type for display
   function formatScoreType(type: string): string {
     if (type === 'elapsedTime') return 'Time';
+    if (type === 'progress') return 'Progress';
     return type.charAt(0).toUpperCase() + type.slice(1); // Capitalize first letter
   }
   
@@ -230,10 +231,10 @@ export function LSCQuestLeaderboard(
       }
       
       // Get leaderboard data from API
-      let params = [`completed=${completed}`, `order=${order}`, `limit=${limit}`, `sortBy=${sortBy}`]
+      let params = [`completed=${completed}`, `orderBy=${order}`, `limit=${limit}`, `sortBy=${sortBy}`]
       let response = await fetch( DEBUG ? `http://localhost:5353/api/quests/${questId}/users?` + params.join('&') : `https://angzaar-plaza.dcl-iwb.co/ws/api/quests/${questId}/users?` + params.join('&')) 
       let data = await response.json()
-      // console.log('leaderboard data:', data);
+      console.log('leaderboard data:', data);
       
       // Check if data is empty
       if (!data || data.length === 0) {
@@ -314,6 +315,9 @@ export function LSCQuestLeaderboard(
             } else {
               scoreText = `${seconds}s`
             }
+          } else if (sortBy === 'progress') {
+            // Format progress with % sign
+            scoreText = `${rowData.progress || 0}%`
           } else {
             // For other score types
             scoreText = rowData[sortBy]?.toString() || '0'
