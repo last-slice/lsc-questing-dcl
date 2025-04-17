@@ -42,6 +42,20 @@ export async function LSCQuestConnect(questId:string) {
 }
 
 /**
+ * Disconnect from a Quest within the LSC Quest System
+ *
+ * @param questId
+ */
+export async function LSCQuestDisconnect(questId:string) {
+  console.log('disconnecting from quest', questId)
+  let connection = lscQuestConnections.get(questId)
+  if(!connection)  return
+
+  connection.leave(true)
+  lscQuestConnections.delete(questId)
+}
+
+/**
  * Start a specific Quest in the LSC Quest System
  *
  * @param questId
